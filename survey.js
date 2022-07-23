@@ -75,9 +75,15 @@ function askQuestions(questionIndex) {
     console.log(`\nThanks for filling out your profile, ${conColorBright}${surveyAnswers[0]}${conColorReset}.\n`);
     console.log(`📗 YOUR PROFILE:`);
     console.log(conColorGreen + consoleHalfLine + conColorReset);
-    console.log(`${conColorGreen}Your favorite thing to listen to while ${conColorCyan}${surveyAnswers[1]}${conColorGreen} is ${conColorCyan}${surveyAnswers[2]}${conColorGreen}.${conColorReset}`);
-    console.log(`${conColorGreen}Your favorite thing to eat is ${surveyAnswers[4]} while at ${surveyAnswers[3]}.${conColorReset}`);
-    console.log(`${conColorGreen}Your favorite sport is ${surveyAnswers[5]} and your 'superpower' is ${surveyAnswers[6]}.${conColorReset}\n`);
+    if(surveyAnswers[2] && surveyAnswers[1]) {
+      console.log(`${conColorGreen}Your favorite thing to listen to while ${conColorCyan}${surveyAnswers[1]}${conColorGreen} is ${conColorCyan}${surveyAnswers[2]}${conColorGreen}.${conColorReset}`);
+    }
+    if(surveyAnswers[4] && surveyAnswers[3]) {
+      console.log(`${conColorGreen}Your favorite thing to eat is ${surveyAnswers[4]} while at ${surveyAnswers[3]}.${conColorReset}`);
+    }
+    if(surveyAnswers[5] && surveyAnswers[6]) {
+      console.log(`${conColorGreen}Your favorite sport is ${surveyAnswers[5]} and your 'superpower' is ${surveyAnswers[6]}.${conColorReset}\n`);
+    }
   }
 };
 
