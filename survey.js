@@ -36,19 +36,49 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-/*
-What's your name? Nicknames are also acceptable :)
-What's an activity you like doing?
-What do you listen to while doing that?
-Which meal is your favourite (eg: dinner, brunch, etc.)
-What's your favourite thing to eat for that meal?
-Which sport is your absolute favourite?
-What is your superpower? In a few words, tell us what you are amazing at!
-*/
+console.clear();
+console.log(drawDivideLine(conColorGreen,50,"LHL - Survey App"));
+console.log(`\nItems marked with ${conColorRed}*${conColorReset} are required!\n`);
 
 
-rl.question('What do you think of Node.js? ', (answer) => {
-  console.log(`Thank you for your valuable feedback: ${answer}`);
+const surveyQuestions = [
+`${conColorRed}*${conColorReset} ${conColorGreen}What's your name? ${conColorReset}${conColorDim}Nicknames are also acceptable.${conColorReset}`,
+`What's an activity you like doing?`,
+`What do you listen to while doing that?`,
+`Which meal is your favourite ${conColorDim}(eg: dinner, brunch, etc.)${conColorReset}`,
+`What's your favourite thing to eat for that meal?`,
+`Which sport is your absolute favourite?`,
+`What is your superpower? ${conColorDim}In a few words, tell us what you are amazing at!${conColorReset}`
+];
 
-  rl.close();
-});
+let surveyAnswers = [];
+// console.log('\n\nCHAR AT: '+surveyQuestions[0].charAt(5)+'\n\n'); // DEBUG to find start of line if we're using color codes
+
+
+//
+// PROBLEM:  we need to use call back to run into the next surveyQuestions
+// https://github.com/nodejs/node/blob/main/doc/api/readline.md
+
+function askQuestions(questionIndex) {
+  if (questionIndex < surveyQuestions.length) { // loop thru all questions - readline needs to use callbacks
+    rl.question(conColorGreen + surveyQuestions[questionIndex] + conColorCyan +' ', (answer) => {
+      if(!answer && surveyQuestions[questionIndex].charAt(5) ==='*') {
+        console.log(`\n${conColorRed}Input Required for this question.  ${conColorGreen}Try again!${conColorReset}\n`);
+        askQuestions(questionIndex);
+      } else {
+        surveyAnswers.push(answer);
+        askQuestions(questionIndex + 1);
+      }
+    });
+  } else {
+    rl.close();
+    console.log(`\nThanks for filling out your profile, ${conColorBright}${surveyAnswers[0]}${conColorReset}.\n`);
+    console.log(`📗 YOUR PROFILE:`);
+    console.log(conColorGreen + consoleHalfLine + conColorReset);
+    console.log(`${conColorGreen}Your favorite thing to listen to while ${conColorCyan}${surveyAnswers[1]}${conColorGreen} is ${conColorCyan}${surveyAnswers[2]}${conColorGreen}.${conColorReset}`);
+    console.log(`${conColorGreen}Your favorite thing to eat is ${surveyAnswers[4]} while at ${surveyAnswers[3]}.${conColorReset}`);
+    console.log(`${conColorGreen}Your favorite sport is ${surveyAnswers[5]} and your 'superpower' is ${surveyAnswers[6]}.${conColorReset}\n`);
+  }
+};
+
+askQuestions(0); // start on question index 0
